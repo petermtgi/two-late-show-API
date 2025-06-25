@@ -20,7 +20,7 @@ with app.app_context():
 
     # Guests
     guest1 = Guest(name="Robert Downey Jr.", occupation="Actor")
-    guest2 = Guest(name="Bill Nye", occupation="Science Guy")
+    guest2 = Guest(name="Bill Nye", occupation="Scienc Guy")
     guest3 = Guest(name="Taylor Swift", occupation="Musician")
 
     # Episodes
