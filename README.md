@@ -127,6 +127,3 @@ Peter Mutua
 Backend Developer
 GitHub Profile
 
-markdown
-Copy
-Edit
