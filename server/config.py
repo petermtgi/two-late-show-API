@@ -1,4 +1,19 @@
+import os
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+
+load_dotenv()
+
+db = SQLAlchemy()
+migrate = Migrate()
+jwt = JWTManager()
+
 class Config:
-    SQLALCHEMY_DATABASE_URI = "postgresql://late_user:mysecurepassword@localhost:5432/late_show_db"
+    SQLALCHEMY_DATABASE_URI = (
+        f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
+        f"@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}"
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "super-secret-key"
+    JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")

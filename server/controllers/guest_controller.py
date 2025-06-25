@@ -1,9 +1,15 @@
 from flask import Blueprint, jsonify
-from server.models import Guest
+from server.models.guest import Guest
 
-bp = Blueprint('guests', __name__)
+guest_bp = Blueprint('guest', __name__, url_prefix='/guests')
 
-@bp.route('/guests', methods=['GET'])
+@guest_bp.route("", methods=["GET"])
 def get_guests():
     guests = Guest.query.all()
-    return jsonify([guest.to_dict() for guest in guests]), 200
+    return jsonify([
+        {
+            "id": guest.id,
+            "name": guest.name,
+            "occupation": guest.occupation
+        } for guest in guests
+    ])

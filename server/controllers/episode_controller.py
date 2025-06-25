@@ -1,24 +1,40 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from server.models.episode import Episode
+from server.config import db
 from flask_jwt_extended import jwt_required
-from server.models import Episode, Appearance, db
 
-bp = Blueprint('episodes', __name__)
+episode_bp = Blueprint('episode', __name__, url_prefix='/episodes')
 
-@bp.route('/episodes', methods=['GET'])
+@episode_bp.route("", methods=["GET"])
 def get_episodes():
     episodes = Episode.query.all()
-    return jsonify([episode.to_dict() for episode in episodes]), 200
+    return jsonify([
+        {
+            "id": episode.id,
+            "date": episode.date,
+            "number": episode.number
+        } for episode in episodes
+    ])
 
-@bp.route('/episodes/<int:id>', methods=['GET'])
+@episode_bp.route("/<int:id>", methods=["GET"])
 def get_episode(id):
     episode = Episode.query.get_or_404(id)
-    appearances = [appearance.to_dict() for appearance in episode.appearances]
-    return jsonify({"episode": episode.to_dict(), "appearances": appearances}), 200
+    return jsonify({
+        "id": episode.id,
+        "date": episode.date,
+        "number": episode.number,
+        "appearances": [
+            {
+                "guest_id": a.guest_id,
+                "rating": a.rating
+            } for a in episode.appearances
+        ]
+    })
 
-@bp.route('/episodes/<int:id>', methods=['DELETE'])
+@episode_bp.route("/<int:id>", methods=["DELETE"])
 @jwt_required()
 def delete_episode(id):
     episode = Episode.query.get_or_404(id)
     db.session.delete(episode)
     db.session.commit()
-    return jsonify({"message": "Episode deleted"}), 200
+    return jsonify(message="Episode deleted"), 200
