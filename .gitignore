@@ -1,0 +1,23 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# SQLite and other local DBs
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+
+# Flask migrations
+migrations/
+
+# Pipenv lock file (optional; depends on team policy)
+Pipfile.lock
+
+# VS Code settings (optional)
+.vscode/
+
+# macOS junk
+.DS_Store
